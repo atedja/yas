@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.version = YAS::VERSION
   s.authors = ["Albert Tedja"]
   s.email = "nicho_tedja@yahoo.com"
-  s.homepage = "https://github.com/atedja/yahs"
+  s.homepage = "https://github.com/atedja/yas"
   s.summary = "Yet Another Schema for Ruby."
   s.description = "#{YAS::NAME} is a Ruby hash schema and validator."
 
