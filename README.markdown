@@ -46,7 +46,7 @@ You can extend the behavior of YAS by writing your own custom extensions, but `Y
 
 ### Attribute Extension
 
-The Attribute extension allows you to specify certain requirements for a given key:
+The Attribute extension allows you to specify certain requirements/restrictions for a given key:
 
     class MySchema < YAS::Schema
       key :email do
@@ -71,7 +71,7 @@ List of directives you can use:
 
 * `type(T)`
 
-  Sets the type of this key. Will perform type check if specified.
+  Sets the type of this key. Will perform type check if specified. Can be nested if type is a YAS::Schema!
 
 * `auto_convert`
 
@@ -98,7 +98,7 @@ Using `rename` to rename keys. Useful to maintain hash integrity.
     hash[:nickname] # 'jdoe'
 
 
-### Migration Extension
+### Migrate Extension
 
 You can also migrate the values. This is useful if you have hash whose values are in the old format and you want to convert them to the new format.
 
@@ -110,3 +110,18 @@ You can also migrate the values. This is useful if you have hash whose values ar
     hash = { :nicknames => 'jdoe' }
     hash.validate!(UserSchema)
     hash[:nicknames] # ['jdoe']
+
+
+### Whitelist Extension
+
+Whitelist allows you to remove unneeded keys.
+
+    class UserSchema < YAS::Schema
+      whitelist :name, :address
+    end
+    hash = { :name => 'jdoe', :address => '123 Main St', :phone => '9990000000', :comment => 'JDoe is cool' }
+    hash.validate!(UserSchema)
+    hash[:name] # ['jdoe']
+    hash[:address] # ['123 Main St']
+    hash[:phone] # nil
+    hash[:comment] # nil
