@@ -6,7 +6,6 @@ class YAS::AttributeExt
   module ClassMethods
 
     def key attr, &block
-      attr = attr.to_s.to_sym
       new_attr = Attribute.new(attr)
       new_attr.instance_eval &block if block
       attributes[attr] = new_attr
@@ -54,7 +53,7 @@ class YAS::AttributeExt
 
 
     def initialize name
-      @name = name.to_s.to_sym
+      @name = name
     end
 
 

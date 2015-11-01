@@ -138,6 +138,11 @@ class AttributeSchema < YAS::Schema
     auto_convert
   end
 
+  key 'geo' do
+    type Float
+    auto_convert
+  end
+
 end
 
 
@@ -157,9 +162,11 @@ class TestAttributeExt < Minitest::Test
     hash = {
       name: "someone",
       number: 10,
+      'geo' => '10.20',
     }
     hash.validate! AttributeSchema
     assert_equal "someone", hash[:name]
+    assert_equal 10.20, hash['geo']
   end
 
 
