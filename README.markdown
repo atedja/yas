@@ -43,6 +43,11 @@ You can extend the behavior of YAS by writing your own custom extensions, but `Y
 
   Provide a set of keys that you only care to see.
 
+* `symbolize`
+
+  Symbolize keys in the hash.
+
+Optionally, you may also use `YAS::SchemaBase` if you want to start off from a clean slate.
 
 ### Attribute Extension
 
@@ -71,7 +76,7 @@ List of directives you can use:
 
 * `type(T)`
 
-  Sets the type of this key. Will perform type check if specified. Can be nested if type is a YAS::Schema!
+  Sets the type of this key. Will perform type check if specified. Can be nested if type is a `YAS::Schema`!
 
 * `auto_convert`
 
@@ -125,3 +130,15 @@ Whitelist allows you to remove unneeded keys.
     hash[:address] # ['123 Main St']
     hash[:phone] # nil
     hash[:comment] # nil
+
+
+### Symbolize Extension
+
+Symbolize keys in your hash.  This does not perform deep symbolize. See nested Attribute validation if you want deep symbolize.
+
+    class UserSchema < YAS::Schema
+      symbolize true
+    end
+    hash = { 'name' => 'jdoe', 'address' => '123 Main St' }
+    hash.validate!(UserSchema)
+    hash[:name] # ['jdoe']
