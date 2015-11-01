@@ -57,6 +57,27 @@ end
 
 class TestSchema < Minitest::Test
 
+  def test_duplicate_ext
+    assert_raises YAS::ExtensionError do
+      Class.new(YAS::Schema) do
+        use YAS::RenameExt
+      end
+    end
+  end
+
+
+  def test_invalid_ext_format
+    bad_ext = Class.new do
+    end
+
+    assert_raises YAS::ExtensionError do
+      Class.new(YAS::Schema) do
+        use bad_ext
+      end
+    end
+  end
+
+
   def test_validate_not_bang_does_not_overwrite_original
     hash = {
       names: "john",
@@ -65,6 +86,7 @@ class TestSchema < Minitest::Test
     assert_equal ["john"], result[:names]
     assert_equal "john", hash[:names]
   end
+
 
   def test_inherited_schema_should_inherit_extensions
     hash = {
@@ -76,6 +98,7 @@ class TestSchema < Minitest::Test
     assert_equal "Dolly", hash[:books]
     assert_nil hash[:book]
   end
+
 
   def test_complex_schema
     hash = {

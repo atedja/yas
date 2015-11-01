@@ -1,7 +1,7 @@
 class YAS::SchemaBase
 
   def self.use ext
-    raise YAS::ExtensionError, "Duplicate Extension" if exts.any? { |e| e == ext }
+    raise YAS::ExtensionError, "Duplicate Extension. Extension #{ext} is already used." if exts.include?(ext)
     raise YAS::ExtensionError, "Wrong Extension Format" unless ext.respond_to?(:apply) && ext.respond_to?(:when_used)
     exts << ext
     ext.when_used(self)
