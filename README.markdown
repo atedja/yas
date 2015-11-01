@@ -14,7 +14,7 @@ Using YAS, you can enforce a specific key to be required, rename them, perform a
     require 'yas'
 
     class MySchema < YAS::Schema
-      rename :foo => :bar
+      rename :bar => :foo
     end
 
     h = { bar: "value" }
