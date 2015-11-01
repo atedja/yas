@@ -149,7 +149,9 @@ class YAS::AttributeExt
         value = trigger_auto_convert_directive(value)
 
         msg = "Type mismatch for attribute #{@name}"
-        if @type == TrueClass || @type == FalseClass
+        if @type <= YAS::Schema
+          value = @type.validate(value)
+        elsif @type == TrueClass || @type == FalseClass
           raise YAS::ValidationError, msg unless !!value == value
         else
           raise YAS::ValidationError, msg unless value.is_a?(@type)

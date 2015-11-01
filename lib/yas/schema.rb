@@ -40,7 +40,7 @@ class YAS::Schema < YAS::SchemaBase
 
   use YAS::RenameExt
   use YAS::WhitelistExt
-  use YAS::AttributeExt
   use YAS::MigrateExt
+  use YAS::AttributeExt
 
 end

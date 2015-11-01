@@ -141,6 +141,16 @@ class AttributeSchema < YAS::Schema
 end
 
 
+class NestedAttributeSchema < YAS::Schema
+
+  key :personal_info do
+    required
+    type AttributeSchema
+  end
+
+end
+
+
 class TestAttributeExt < Minitest::Test
 
   def test_attribute_ext
@@ -172,6 +182,19 @@ class TestAttributeExt < Minitest::Test
     hash.validate! AttributeSchema
     assert_equal 10, hash[:number]
     assert_equal "joe", hash[:name]
+  end
+
+
+  def test_nested_attribute_schema
+    hash = {
+      personal_info: {
+        name: nil,
+        number: "10"
+      }
+    }
+    hash.validate! NestedAttributeSchema
+    assert_equal 10, hash[:personal_info][:number]
+    assert_equal "joe", hash[:personal_info][:name]
   end
 
 end
