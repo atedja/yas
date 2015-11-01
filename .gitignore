@@ -1,0 +1,6 @@
+*.gem
+*.swp
+*.swo
+tags
+.yardoc
+doc
