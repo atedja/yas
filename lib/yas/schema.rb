@@ -38,6 +38,7 @@ end
 
 class YAS::Schema < YAS::SchemaBase
 
+  use YAS::SymbolizeExt
   use YAS::RenameExt
   use YAS::WhitelistExt
   use YAS::MigrateExt

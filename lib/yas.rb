@@ -4,6 +4,7 @@ require 'yas/version'
 require 'yas/errors'
 require 'yas/helper'
 
+require 'yas/ext/symbolize'
 require 'yas/ext/rename'
 require 'yas/ext/attribute'
 require 'yas/ext/migrate'
