@@ -1,5 +1,3 @@
-require 'securerandom'
-require 'json'
 require 'time'
 
 require 'yas/version'
