@@ -1,6 +1,6 @@
 # YAS
 
-YAS (Yet Another Schema) is an extensible hash validator for Ruby.
+YAS (Yet Another Schema) is an extensible hash validator for Ruby used to maintain hash integrity.
 Using YAS, you can enforce a specific key to be required, rename them, perform automatic type conversion, and other goodies.
 
 
@@ -19,39 +19,29 @@ Using YAS, you can enforce a specific key to be required, rename them, perform a
 
     h = { bar: "value" }
     h.validate! MySchema
-    puts h[:foo]  # "value"
-    puts h[:bar]  # nil
+    h[:foo]  # "value"
+    h[:bar]  # nil
 
 
 ## Extensions
 
-You can extend the behavior of YAS by writing your own custom extensions, but `YAS::Schema` already comes with a set of awesome default extensions that you can immediately use:
-
-* `attribute name, &block` or `key name, &block`
-
-  Declares an attribute/key with various requirements.
-
-* `rename`
-
-  Rename keys.
-
-* `migrate`
-
-  Migrate the value of a key.
-
-* `whitelist`
-
-  Provide a set of keys that you only care to see.
-
-* `symbolize`
-
-  Symbolize keys in the hash.
-
+You can extend the behavior of YAS by writing your own custom extensions.
+`YAS::Schema` already comes with a set of awesome default extensions that you can immediately use.
 Optionally, you may also use `YAS::SchemaBase` if you want to start off from a clean slate.
 
-### Attribute Extension
 
-The Attribute extension allows you to specify certain requirements/restrictions for a given key:
+### Default Extensions
+
+
+#### Attribute
+
+Declares an attribute/key with various requirements.
+The Attribute extension allows you to specify certain requirements/restrictions for a given key.
+
+    attribute name, &block
+    key name, &block
+
+Example:
 
     class MySchema < YAS::Schema
       key :email do
@@ -91,9 +81,13 @@ List of directives you can use:
   Custom validation method to check the value of a key. This is useful in cases where you only want certain values to be stored (e.g a number between 1-10 only)
 
 
-### Rename Extension
+#### Rename
 
-Using `rename` to rename keys. Useful to maintain hash integrity.
+Using `rename` to rename keys.
+
+    rename :from => :to
+
+Example:
 
     class UserSchema < YAS::Schema
       rename :username => :nickname
@@ -103,9 +97,13 @@ Using `rename` to rename keys. Useful to maintain hash integrity.
     hash[:nickname] # 'jdoe'
 
 
-### Migrate Extension
+#### Migrate
 
-You can also migrate the values. This is useful if you have hash whose values are in the old format and you want to convert them to the new format.
+Migrate the value of a key. This is useful if you have keys whose values are in the old format and you want to convert them to the new format.
+
+    migrate :key, &block 
+
+Example:
 
     class UserSchema < YAS::Schema
       migrate :nicknames do |v|
@@ -117,9 +115,13 @@ You can also migrate the values. This is useful if you have hash whose values ar
     hash[:nicknames] # ['jdoe']
 
 
-### Whitelist Extension
+#### Whitelist
 
 Whitelist allows you to remove unneeded keys.
+
+    whitelist [keys]
+
+Example:
 
     class UserSchema < YAS::Schema
       whitelist :name, :address
@@ -132,9 +134,14 @@ Whitelist allows you to remove unneeded keys.
     hash[:comment] # nil
 
 
-### Symbolize Extension
+#### Symbolize
 
-Symbolize keys in your hash.  This does not perform deep symbolize. See nested Attribute validation if you want deep symbolize.
+Symbolize keys in your hash.
+This does not perform deep symbolize. See nested Attribute validation if you want deep symbolize.
+
+    symbolize true|false
+
+Example:
 
     class UserSchema < YAS::Schema
       symbolize true
