@@ -87,7 +87,14 @@ class TestAttribute < Minitest::Test
   end
 
 
-  def test_content
+  def test_alter
+    attr = Attribute.new(:batman).alter { |v| v.uniq!; v.compact!; v }
+    value = attr.validate(["Jim", "John", "Jim", "Kim", "Sally"])
+    assert_equal ["Jim", "John", "Kim", "Sally"], value
+  end
+
+
+  def test_validate_value
     attr = Attribute.new(:batman).validate_value { |v| v == "John" }
     assert_raises YAS::ValidationError do
       attr.validate("Jim")

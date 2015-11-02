@@ -76,9 +76,15 @@ List of directives you can use:
 
   Runs the block to set the default value for this key, if it's missing or nil.
 
+* `alter(&block)`
+
+  Adjust the value of this key. Can be useful if you want to enforce certain formatting, such as upper/lowercase, unique arrays, etc.
+  Value returned by block will be used as the new value for this key, which then gets validated by the `validate_value` block.
+
 * `validate_value(&block)`
 
-  Custom validation method to check the value of a key. This is useful in cases where you only want certain values to be stored (e.g a number between 1-10 only)
+  Custom validation method to check the value of a key. This is useful in cases where you only want certain values to be stored (e.g a number between 1-10 only).
+  Return true to indicate value passes validation, false for fail.
 
 
 #### Rename

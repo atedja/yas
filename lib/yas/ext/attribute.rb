@@ -49,7 +49,8 @@ class YAS::AttributeExt
     @type = nil
     @auto_convert = false
     @default_block = nil
-    @check_value_block = nil
+    @alter_block = nil
+    @validate_value_block = nil
 
 
     def initialize name
@@ -115,33 +116,44 @@ class YAS::AttributeExt
     #   validate_value { |v| v == "John" }
     #
     def validate_value &block
-      @check_value_block = block
+      @validate_value_block = block
       self
     end
 
 
-    # Check the default value.
+    # Perform adjustment to the value of this Attribute.
     #
-    # @param value The value of this attribute to validate.
+    # @yield [v] Value of the Attribute.
     #
+    # @example
+    #   alter { |v| v == "John" }
+    #
+    def alter &block
+      @alter_block = block
+      self
+    end
+
+
+    # Validates attribute, except the required directive.
+    # First it executes the {default} directive, then {auto_convert} to type,
+    # then {type} validation, then finally the {validate} directive.
+    #
+    # @return The final value after the validation.
+    #
+    def validate value
+      value = trigger_default_directive if value.nil?
+      trigger_validate_value_directive(trigger_alter_directive(trigger_type_directive(value)))
+    end
+
+
+    private
+
+
     def trigger_default_directive
       @default_block.call if has_default?
     end
 
 
-    # Check value.
-    #
-    def trigger_content_directive value
-      if @check_value_block
-        raise YAS::ValidationError, "Content validation error: #{value}" unless
-          @check_value_block.call(value)
-      end
-      value
-    end
-
-
-    # Check type.
-    #
     def trigger_type_directive value
       if @type
         # Run auto-conversion first.
@@ -161,8 +173,6 @@ class YAS::AttributeExt
     end
 
 
-    # Auto convert the value
-    #
     def trigger_auto_convert_directive value
       if @auto_convert
         if @type == Integer
@@ -183,15 +193,18 @@ class YAS::AttributeExt
     end
 
 
-    # Validates attribute, except the required directive.
-    # First it executes the {default} directive, then {auto_convert} to type,
-    # then {type} validation, then finally the {validate} directive.
-    #
-    # @return The final value after the validation.
-    #
-    def validate value
-      value = trigger_default_directive if value.nil?
-      trigger_content_directive(trigger_type_directive(value))
+    def trigger_alter_directive value
+      value = @alter_block.call(value) if @alter_block
+      value
+    end
+
+
+    def trigger_validate_value_directive value
+      if @validate_value_block
+        raise YAS::ValidationError, "Content validation error: #{value}" unless
+          @validate_value_block.call(value)
+      end
+      value
     end
 
   end
