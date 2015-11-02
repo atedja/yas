@@ -10,8 +10,7 @@ class YAS::RenameExt
 
   module ClassMethods
     def rename map
-      smap = YAS.symbolize(map)
-      rename_keys.merge!(smap)
+      rename_keys.merge!(map)
     end
 
     def rename_keys
@@ -26,17 +25,18 @@ class YAS::RenameExt
 
 
   def self.when_schema_inherited superschema, subschema
-    superschema.rename_keys.each do |from, value|
-      subschema.rename_keys[key] = value
+    superschema.rename_keys.each do |from, to|
+      subschema.rename_keys[key] = to
     end
   end
 
 
   def self.apply schema, hash
     schema.rename_keys.each do |from, to|
-      hash.has_key?(from) and
-        hash[to] = hash[from] and
+      if hash.has_key?(from)
+        hash[to] = hash[from]
         hash.delete(from)
+      end
     end
   end
 
