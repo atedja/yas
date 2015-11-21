@@ -183,8 +183,8 @@ class YAS::AttributeExt
           value = String(value)
         elsif @type == Array
           value = Array(value)
-        elsif @type == Time && !value.is_a?(Time)
-          value = Time.parse(value)
+        elsif @type <= Time && !value.is_a?(Time)
+          value = @type.parse(value)
         elsif @type == TrueClass || @type == FalseClass
           value = value == "1" || value == 1 || value.to_s.downcase == "true" || value == true ? true : false
         end
