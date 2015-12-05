@@ -2,7 +2,6 @@ require 'time'
 
 require 'yas/version'
 require 'yas/errors'
-require 'yas/helper'
 
 require 'yas/ext/symbolize'
 require 'yas/ext/rename'
