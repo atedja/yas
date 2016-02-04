@@ -40,6 +40,7 @@ class YAS::Schema < YAS::SchemaBase
 
   use YAS::SymbolizeExt
   use YAS::RenameExt
+  use YAS::DuplicateExt
   use YAS::WhitelistExt
   use YAS::MigrateExt
   use YAS::AttributeExt
