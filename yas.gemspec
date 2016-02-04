@@ -19,5 +19,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'mocha', '~> 1.1'
   s.add_development_dependency 'rake', '~> 10.3'
 
-  s.license = "Apache"
+  s.license = "Apache-2.0"
 end
