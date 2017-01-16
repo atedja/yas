@@ -7,9 +7,10 @@ Using YAS, you can enforce a specific key to be required, rename them, perform a
 ## Installation
 
     gem install yas
+    require 'yas'
 
 
-## Quick Start
+## Quick Example
 
     require 'yas'
 
@@ -37,6 +38,7 @@ Optionally, you may also use `YAS::SchemaBase` if you want to start off from a c
 
 Declares an attribute/key with various requirements.
 The Attribute extension allows you to specify certain requirements/restrictions for a given key.
+`attribute` and `key` are aliases, you can use either one.
 
     attribute name, &block
     key name, &block
@@ -57,6 +59,15 @@ Example:
     hash.validate! MySchema # raises YAS::ValidationError "Key 'email' is missing"
     hash.merge!(:email => 'john@email.com')
     hash.validate! MySchema # Success!
+
+You can also specify multiple keys per `key`/`attribute` block.
+
+    class MySchema < YAS::Schema
+      attribute :email, :first_name do
+        required
+        type String
+      end
+    end
 
 List of directives you can use:
 
@@ -143,7 +154,7 @@ Example:
 #### Symbolize
 
 Symbolize keys in your hash.
-This does not perform deep symbolize. See nested Attribute validation if you want deep symbolize.
+This does not perform deep symbolize. See `type` in the Attribute section for if you want deep symbolize.
 
     symbolize true|false
 
