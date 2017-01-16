@@ -45,15 +45,14 @@ class YAS::AttributeExt
 
     attr_reader :name
 
-    @required = false
-    @type = nil
-    @auto_convert = false
-    @default_block = nil
-    @alter_block = nil
-    @validate_value_block = nil
-
 
     def initialize name
+      @required = false
+      @type = nil
+      @auto_convert = false
+      @default_block = nil
+      @alter_block = nil
+      @validate_value_block = nil
       @name = name
     end
 

@@ -121,9 +121,11 @@ class TestAttribute < Minitest::Test
 
   def test_validate_maintain_value_if_type_not_specified
     attr = Attribute.new(:batman)
-    [true, false, :symbol, 1, 0, -1, 10.0, "string", 1293.1, 0x90, Time.now, nil].each do |v|
+    [true, false, :symbol, 1, 0, -1, 10.0, "string", 1293.1, 0x90, Time.now].each do |v|
       assert_equal v, attr.validate(v)
     end
+
+    assert_nil attr.validate(nil)
   end
 
 end

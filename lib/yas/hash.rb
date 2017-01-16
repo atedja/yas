@@ -1,7 +1,7 @@
 class Hash
 
   def validate schema
-    copy = Marshal.load(Marshal.dump(self))
+    copy = Hash[self]
     schema.validate(copy) if schema.respond_to?(:validate)
   end
 

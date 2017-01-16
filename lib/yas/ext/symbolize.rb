@@ -5,7 +5,7 @@ class YAS::SymbolizeExt
 
   module ClassMethods
     def symbolize sym = nil
-      @symbolize = sym if !sym.nil? && (sym.class == TrueClass || sym.class == FalseClass)
+      (!sym.nil? && (sym.class == TrueClass || sym.class == FalseClass)) ?  @symbolize = sym : @symbolize = nil
       @symbolize
     end
   end
