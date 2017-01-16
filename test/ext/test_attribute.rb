@@ -165,6 +165,16 @@ class NestedAttributeSchema < YAS::Schema
 end
 
 
+class MultipleAttributesSchema < YAS::Schema
+
+  key :personal_info, "other_info" do
+    required
+    type String
+  end
+
+end
+
+
 class TestAttributeExt < Minitest::Test
 
   def test_attribute_ext
@@ -211,6 +221,16 @@ class TestAttributeExt < Minitest::Test
     hash.validate! NestedAttributeSchema
     assert_equal 10, hash[:personal_info][:number]
     assert_equal "joe", hash[:personal_info][:name]
+  end
+
+  def test_multiple_attributes_with_same_block
+    hash = {
+      personal_info: "when",
+      "other_info" => "who"
+    }
+    hash.validate! MultipleAttributesSchema
+    assert_equal "when", hash[:personal_info]
+    assert_equal "who", hash["other_info"]
   end
 
 end

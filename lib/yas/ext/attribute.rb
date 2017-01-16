@@ -5,11 +5,12 @@ class YAS::AttributeExt
 
   module ClassMethods
 
-    def key attr, &block
-      new_attr = Attribute.new(attr)
-      new_attr.instance_eval &block if block
-      attributes[attr] = new_attr
-      new_attr
+    def key *attrs, &block
+      attrs.each do |attr|
+        new_attr = Attribute.new(attr)
+        new_attr.instance_eval(&block) if block
+        attributes[attr] = new_attr
+      end
     end
     alias_method :attribute, :key
 
