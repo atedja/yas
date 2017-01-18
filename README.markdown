@@ -166,3 +166,20 @@ Example:
     hash = { 'name' => 'jdoe', 'address' => '123 Main St' }
     hash.validate!(UserSchema)
     hash[:name] # ['jdoe']
+
+
+#### Duplicate
+
+Duplicate the values of a key.
+
+    duplicate :source => :destination
+
+Example:
+
+    class UserSchema < YAS::Schema
+      duplicate :name => :first_name
+    end
+    hash = { :name => 'john' }
+    hash.validate!(UserSchema)
+    hash[:name] # 'john'
+    hash[:first_name] # 'john'
