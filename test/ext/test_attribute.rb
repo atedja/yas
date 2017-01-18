@@ -231,6 +231,13 @@ class TestAttributeExt < Minitest::Test
     hash.validate! MultipleAttributesSchema
     assert_equal "when", hash[:personal_info]
     assert_equal "who", hash["other_info"]
+
+    hash = {
+      personal_info: "when",
+    }
+    assert_raises YAS::ValidationError do
+      hash.validate! MultipleAttributesSchema
+    end
   end
 
 end
